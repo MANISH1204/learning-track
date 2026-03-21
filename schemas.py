@@ -1,6 +1,6 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
 
 class Goal(BaseModel):
     id: int
@@ -15,6 +15,23 @@ class GoalCreate(BaseModel):
     description: Optional[str] = None
     startDate: Optional[date] = None
     targetDate: Optional[date] = None
+
+    @field_validator("title")
+    @classmethod
+    def validate_title(cls, value: str):
+        if not value or not value.strip():
+            raise ValueError("Title cannot be empty or just spaces")
+        return value.strip()
+    
+    @field_validator("startDate", mode="before")
+    @classmethod
+    def parse_date(cls, value):
+        if isinstance(value, str):
+            try:
+                return datetime.strptime(value, "%d-%m-%Y").date()
+            except ValueError:
+                raise ValueError("Date must be in DD-MM-YYYY format")
+        return value
 
 class Task(BaseModel):
     id: int

@@ -1,8 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from database import get_db
+from exception import GoalNotFoundException
 import models
 from schemas import Goal, GoalCreate, GoalPagination
+from services.goal_service import get_goal_by_id
 
 router = APIRouter(prefix="/goals", tags=["Goals"])
 
@@ -26,19 +29,18 @@ def create_goal(goal:GoalCreate, db: Session = Depends(get_db)):
         targetDate = goal.targetDate,
         status="active"
     )
-    db.add(new_goal)
-    db.commit()
-    db.refresh(new_goal)
-    return new_goal
+    try:
+        db.add(new_goal)
+        db.commit()
+        db.refresh(new_goal)
+        return new_goal
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise
 
 @router.get("/{goalId}", response_model=Goal)
 def get_goal(goalId: int, db: Session = Depends(get_db)):
-    goal = db.query(models.Goal).filter(
-        models.Goal.id == goalId
-    ).first()
-    if not goal:
-        return {"error": "goal not found"}
-    return goal
+    return get_goal_by_id(db, goalId)
 
 @router.put("/{goalId}")
 def update_goal(goalId: int, updated_goal: GoalCreate, db: Session = Depends(get_db)):
@@ -47,15 +49,20 @@ def update_goal(goalId: int, updated_goal: GoalCreate, db: Session = Depends(get
     ).first()
 
     if not goal:
-        return {"error": "Goal not found"}
+        raise GoalNotFoundException(goalId)
     
     goal.title = updated_goal.title
     goal.description = updated_goal.description
     goal.startDate = updated_goal.startDate
     goal.targetDate = updated_goal.targetDate
 
-    db.commit()
-    return goal
+    try:
+        db.commit()
+        return goal
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise
+
 
 @router.delete("/{goalId}")
 def delete_goal(goalId: int, db: Session = Depends(get_db)):
@@ -65,9 +72,13 @@ def delete_goal(goalId: int, db: Session = Depends(get_db)):
     ).first()
 
     if not goal:
-        return {"error": "Goal not found"}
-
-    db.delete(goal)
-    db.commit()
+        raise GoalNotFoundException(goalId)
+    
+    try:
+        db.delete(goal)
+        db.commit()
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise
 
     return {"message": "Goal deleted"}

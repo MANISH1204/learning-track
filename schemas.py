@@ -16,22 +16,12 @@ class GoalCreate(BaseModel):
     startDate: Optional[date] = None
     targetDate: Optional[date] = None
 
-    @field_validator("title")
-    @classmethod
-    def validate_title(cls, value: str):
-        if not value or not value.strip():
-            raise ValueError("Title cannot be empty or just spaces")
-        return value.strip()
-    
-    @field_validator("startDate", mode="before")
-    @classmethod
-    def parse_date(cls, value):
-        if isinstance(value, str):
-            try:
-                return datetime.strptime(value, "%d-%m-%Y").date()
-            except ValueError:
-                raise ValueError("Date must be in DD-MM-YYYY format")
-        return value
+    # @field_validator("title")
+    # @classmethod
+    # def validate_title(cls, value: str):
+    #     if not value or not value.strip():
+    #         raise ValueError("Title cannot be empty or just spaces")
+    #     return value.strip()
 
 class Task(BaseModel):
     id: int

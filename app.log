@@ -1,2 +1,6 @@
 2026-03-21 20:09:58,347 - app - ERROR - Goal not found:Goal with id55 not found
 2026-03-21 20:10:59,967 - app - INFO - Goal not found:Goal with id55 not found
+2026-03-26 22:20:03,617 - app - ERROR - Database error:(pyodbc.IntegrityError) ('23000', '[23000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]The INSERT statement conflicted with the FOREIGN KEY constraint "FK__SubTasks__taskId__3B75D760". The conflict occurred in database "LearningTracker", table "dbo.Tasks", column \'id\'. (547) (SQLExecDirectW); [23000] [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]The statement has been terminated. (3621)')
+[SQL: INSERT INTO [SubTasks] ([taskId], title, [plannedHours], [startDate], [endDate], status) OUTPUT inserted.id VALUES (?, ?, ?, ?, ?, ?)]
+[parameters: (0, 'string', 0, datetime.datetime(2026, 3, 26, 0, 0), datetime.datetime(2026, 3, 26, 0, 0), 'pending')]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

@@ -44,7 +44,7 @@ class WorkLog(Base):
     id = Column(Integer, primary_key=True)
     subtaskId = Column(Integer, ForeignKey("SubTasks.id"))
     hoursSpent = Column(Float)
-    workDate = Column(Float)
+    workDate = Column(Date)
     notes = Column(String)
 
 class User(Base):

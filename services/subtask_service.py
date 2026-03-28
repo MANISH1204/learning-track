@@ -25,7 +25,7 @@ def service_update_subtask(subtaskId, data, db:Session):
         return {"error", "Subtask not found"}
     if data.title:
         subtask.title = data.title
-    if data.planneHours:
+    if data.plannedHours:
         subtask.plannedHours = data.plannedHours
     return repo_update_subtask(subtask, db)
 

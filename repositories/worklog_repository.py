@@ -14,3 +14,8 @@ def create_worlog(newlog:WorkLogCreate, db:Session):
     db.commit()
     db.refresh(newlog)
     return newlog
+
+def get_all_worklog(worklog, db:Session):
+    return db.query(models.WorkLog).filter(
+        models.WorkLog.subtaskId == worklog.id
+    ).all

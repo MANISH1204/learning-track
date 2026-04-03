@@ -3,4 +3,5 @@ class GoalNotFoundException(Exception):
         self.goal_id = goal_id
         self.code = "GOAL_NOT_FOUND"
         self.message = f"Goal with id{goal_id} not found"
+        super().__init__(self.message)
         

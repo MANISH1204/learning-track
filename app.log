@@ -4,3 +4,46 @@
 [SQL: INSERT INTO [SubTasks] ([taskId], title, [plannedHours], [startDate], [endDate], status) OUTPUT inserted.id VALUES (?, ?, ?, ?, ?, ?)]
 [parameters: (0, 'string', 0, datetime.datetime(2026, 3, 26, 0, 0), datetime.datetime(2026, 3, 26, 0, 0), 'pending')]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-04-03 12:49:50,450 - app - INFO - Goal not found:Goal with id22 not found
+2026-04-03 13:42:59,105 - main - ERROR - Unhandled exception
+Traceback (most recent call last):
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\fastapi\routing.py", line 130, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\fastapi\routing.py", line 116, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\fastapi\routing.py", line 691, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<11 lines>...
+    )
+    ^
+  File "d:\Manish\PythonProgramming\LearningTrack\.venv\Lib\site-packages\fastapi\routing.py", line 296, in serialize_response
+    raise ResponseValidationError(
+    ...<3 lines>...
+    )
+fastapi.exceptions.ResponseValidationError: 1 validation error:
+  {'type': 'int_type', 'loc': ('response', 'id'), 'msg': 'Input should be a valid integer', 'input': None}
+
+  File "D:\Manish\PythonProgramming\LearningTrack\routers\goals.py", line 17, in create_goal
+    POST /api/v1/goals/

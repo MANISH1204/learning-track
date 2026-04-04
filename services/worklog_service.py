@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
 import models
 from repositories.worklog_repository import create_worlog, get_worklogId
+from exception import SubtaskNotFoundException
 
 def service_create_worklog(worklog, db:Session):
     subtask = get_worklogId(worklog, db)
 
     if not subtask:
-        return{"error": "Subtask not found"}
+        raise SubtaskNotFoundException(worklog.subtaskId)
     
     newlog = models.WorkLog(
         subtaskId = worklog.subtaskId,
@@ -15,4 +16,7 @@ def service_create_worklog(worklog, db:Session):
         notes = worklog.notes
     )
 
-    return create_worlog(newlog, db)
+    create_worlog(newlog, db)
+    db.commit()
+    db.refresh(newlog)
+    return newlog

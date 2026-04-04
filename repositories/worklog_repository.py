@@ -11,8 +11,6 @@ def get_worklogId(worklog:WorkLogCreate, db:Session):
 
 def create_worlog(newlog:WorkLogCreate, db:Session):
     db.add(newlog)
-    db.commit()
-    db.refresh(newlog)
     return newlog
 
 def get_all_worklog(worklog, db:Session):

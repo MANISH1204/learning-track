@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from database import get_db
 from sqlalchemy.orm import Session
-import models
 from schemas import Task, TaskCreate
 from services.task_service import create_task_service, get_task_service
 
